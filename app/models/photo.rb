@@ -25,9 +25,15 @@ class Photo < ApplicationRecord
 
   # Photo#likes: returns rows from the likes table associated to this photo by the photo_id column
 
+  belongs_to(:poster, class_name: "User", foreign_key: "owner_id" )
+  has_many(:comments, class_name: "Comment", foreign_key: "photo_id")
+  has_many(:likes, class_name: "Like", foreign_key: "photo_id")
+
   ## Indirect associations
 
   # Photo#fans: returns rows from the users table associated to this photo through its likes
+
+  has_many(:fans, through: :likes, source: :fan)
 
   def poster
     my_owner_id = self.owner_id
